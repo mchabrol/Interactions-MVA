@@ -27,6 +27,5 @@ Certaines parties du code sont directement dérivées du projet original, et nou
 
 ## 📜 **Licence**
 
-Ce projet est sous licence MIT. Voir [LICENSE](./LICENSE) pour plus de détails.  
 L’implémentation originale de **Pymarket** est également sous licence MIT.  
 
