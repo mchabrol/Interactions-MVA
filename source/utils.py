@@ -2,6 +2,17 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math
 
+def read_config_file(filename):
+    config = {}
+    with open(filename, 'r') as f:
+        for line in f:
+            line = line.strip()
+            if not line or line.startswith('#'):
+                continue
+            key, value = line.split("=")
+            config[key.strip()] = value.strip()
+    return config
+
 def reconstruct_grid(black, white):
     """
     Reconstruit la grille complète à partir des sous-matrices black et white.
