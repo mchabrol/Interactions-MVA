@@ -16,16 +16,7 @@ L'implémentation originale de **Pymarket** peut être trouvée ici :
 
 ---
 
-## 📝 **Crédits**
-
-Ce projet s’inspire fortement de [Pymarket](https://github.com/kenokrieger/pymarket),  
-une implémentation du **modèle de Bornholdt** en Python sous licence MIT.  
-
-Certaines parties du code sont directement dérivées du projet original, et nous remercions les auteurs pour leur travail initial.
-
----
-
 ## 📜 **Licence**
 
-L’implémentation originale de **Pymarket** est également sous licence MIT.  
+L’implémentation originale de **Pymarket** est sous licence MIT.  
 
