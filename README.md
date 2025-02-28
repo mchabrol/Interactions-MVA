@@ -7,8 +7,6 @@ qui implémente le **modèle d’Ising de Bornholdt** en Python.
 
 Ce projet reprend certaines idées et implémentations de **Pymarket** tout en ajoutant les améliorations suivantes :
 - **Refonte en programmation orientée objet (POO)** :  
-  - Ajout de la classe `Trader` pour modéliser chaque agent.
-  - Introduction de la classe `SpinSystem` pour gérer l’ensemble des agents.
 - **Réorganisation et modularisation du code** pour une meilleure lisibilité.
 - **Optimisation des mises à jour des spins** avec une gestion plus efficace des sous-grilles.
 - **Ajout de visualisations** pour observer l’évolution du marché en fonction du temps.
