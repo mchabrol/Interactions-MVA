@@ -16,6 +16,18 @@ L'implémentation originale de **Pymarket** peut être trouvée ici :
 
 ---
 
+## 📂 Notebooks principaux
+
+Trois notebooks principaux sont inclus dans ce projet, chacun explorant une variation du modèle de base :
+
+- **`main.ipynb`** : Implémente le modèle de base décrit dans le papier et déjà présent dans **Pymarket**. Il sert de référence pour les autres expériences.
+- **`mainwithadvantage.ipynb`** : Introduit une asymétrie d’information en simulant un petit groupe d’agents mieux informés, ce qui permet d’étudier l'impact d’un avantage informationnel sur le marché.
+- **`mainwithkrash.ipynb`** : Modélise des krachs boursiers en imposant la vente forcée d’un certain nombre d’agents simultanément, afin d’analyser les dynamiques de panique et d’effondrement du marché.
+
+Chacun de ces notebooks est accompagné d’un fichier `.py` correspondant, qui contient les fonctions implémentant ces expériences.
+
+---
+
 ## 📜 **Licence**
 
 L’implémentation originale de **Pymarket** est sous licence MIT.  
