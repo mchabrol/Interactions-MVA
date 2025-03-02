@@ -44,11 +44,11 @@ def visualize_grid(grid):
     plt.figure(figsize=(6,6))
     plt.imshow(grid, cmap='gray', vmin=-1, vmax=1)
     plt.colorbar(label="Spin Value")
-    plt.title("Visualisation de la grille de spins")
+    plt.title('Grid visualization')
     plt.show()
 
 
-def plot_array_list(arr_list, max_cols=3):
+def plot_array_list(arr_list, max_cols=3, timesteps=None):
     """
     Trace la liste de tableaux arr_list dans des subplots.
     max_cols indique le nb maximum de colonnes.
@@ -58,6 +58,8 @@ def plot_array_list(arr_list, max_cols=3):
     n_cols = min(n_plots, max_cols)
     # Calculer le nombre de lignes
     n_rows = math.ceil(n_plots / n_cols)
+    if not timesteps:
+        timesteps = np.arange(len(arr_list))
 
     fig, axes = plt.subplots(nrows=n_rows, ncols=n_cols, figsize=(4*n_cols, 4*n_rows))
 
@@ -68,7 +70,7 @@ def plot_array_list(arr_list, max_cols=3):
         ax = axes[i]
         # Exemple : on affiche le tableau arr sous forme d’image
         ax.imshow(arr, cmap='gray', interpolation='none')
-        ax.set_title(f"Time {i}")
+        ax.set_title(f"Time {timesteps[i]}", fontsize=20)
         ax.axis('off')
 
     # Si jamais il reste des cases vides dans la grille, on les masque
