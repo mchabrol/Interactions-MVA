@@ -49,7 +49,7 @@ class SpinSystem:
             for col in range(5):
                 neighbour_sum = -4 + 2*col  # -4, -2, 0, +2, +4
                 field = reduced_neighbor_coupling * neighbour_sum \
-                        - market_coupling * spin
+                        - market_coupling * spin #equation (4)
                 # Règle de Heatbath : P(flip) = 1 / (1 + exp(field))
                 probabilities[row, col] = 1 / (1 + np.exp(field))
         return probabilities
