@@ -92,8 +92,7 @@ class SpinSystem:
         :param fraction: Pourcentage d'agents dans la zone qui seront forcés à -1
         :param region: 
            - "random": choisit des positions aléatoires sur la grille complète
-           - "top_left", "bottom_left", etc. => On peut imaginer 
-             cibler une zone spécifique
+           - "top_left", "bottom_left", etc.
         """
         # black + white => on va manipuler le tableau complet
         # mais la portion est stockée en 2 sous-grilles
@@ -123,5 +122,39 @@ class SpinSystem:
             half_rows_w = rows_w // 2
             half_cols_w = cols_w // 2
             self.white[:half_rows_w, :half_cols_w] = -1
-        
-        #TO DO: ajouter d'autres regions
+
+        elif region == "top_right":
+            # on cible la moitié supérieure et la moitié droite
+            # pour black
+            half_rows_b = rows_b // 2
+            half_cols_b = cols_b // 2
+            self.black[:half_rows_b, half_cols_b:] = -1
+            # pour white
+            half_rows_w = rows_w // 2
+            half_cols_w = cols_w // 2
+            self.white[:half_rows_w, half_cols_w:] = -1
+
+        elif region == "bottom_left":
+            # on cible la moitié inférieure et la moitié gauche
+            # pour black
+            half_rows_b = rows_b // 2
+            half_cols_b = cols_b // 2
+            self.black[half_rows_b:, :half_cols_b] = -1
+            # pour white
+            half_rows_w = rows_w // 2
+            half_cols_w = cols_w // 2
+            self.white[half_rows_w:, :half_cols_w] = -1
+
+        elif region == "bottom_right":
+            # on cible la moitié inférieure et la moitié droite
+            # pour black
+            half_rows_b = rows_b // 2
+            half_cols_b = cols_b // 2
+            self.black[half_rows_b:, half_cols_b:] = -1
+            # pour white
+            half_rows_w = rows_w // 2
+            half_cols_w = cols_w // 2
+            self.white[half_rows_w:, half_cols_w:] = -1
+
+        else:
+            raise ValueError("Error: param region must be 'random', 'top_left', 'top_right', 'bottom_left', or 'bottom_right'")
