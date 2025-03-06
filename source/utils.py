@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import math
+import matplotlib.colors as colors
 
 def read_config_file(filename):
     config = {}
@@ -35,47 +36,63 @@ def reconstruct_grid(black, white):
     return full_grid
 
 
-def visualize_grid(grid):
+def visualize_grid(grid, title='Grid visualization'):
     """
-    Affiche une grille de spins sous forme d’une image en noir et blanc.
-    
-    :param grid: La grille complète de spins (-1 et 1).
+    Affiche une grille dont les spins sont dans {-1, 0, +1} 
+    en utilisant un colormap discret : noir, gris, blanc.
     """
+    # 1) Définir les couleurs et les bornes
+    cmap = colors.ListedColormap(['black', 'gray', 'white'])
+    # Les bornes délimitent les intervalles pour chaque couleur
+    bounds = [-1.5, -0.5, 0.5, 1.5]
+    norm = colors.BoundaryNorm(bounds, cmap.N)
+
     plt.figure(figsize=(6,6))
-    plt.imshow(grid, cmap='gray', vmin=-1, vmax=1)
-    plt.colorbar(label="Spin Value")
-    plt.title('Grid visualization')
+    # 2) Afficher l'image avec la cmap et le norm adéquat
+    im = plt.imshow(grid, cmap=cmap, norm=norm)
+
+    # 3) Ajouter la barre de couleur avec des ticks discrets
+    cbar = plt.colorbar(im, ticks=[-1, 0, 1])
+    cbar.set_label("Spin Value")
+
+    plt.title(title)
     plt.show()
 
 
 def plot_array_list(arr_list, max_cols=3, timesteps=None):
     """
-    Trace la liste de tableaux arr_list dans des subplots.
-    max_cols indique le nb maximum de colonnes.
+    Trace chaque grille de arr_list dans un subplot, en utilisant un colormap discret.
     """
+    from math import ceil
+    
     n_plots = len(arr_list)
-    # Déterminer le nombre de colonnes (pas plus que max_cols)
     n_cols = min(n_plots, max_cols)
-    # Calculer le nombre de lignes
-    n_rows = math.ceil(n_plots / n_cols)
+    n_rows = ceil(n_plots / n_cols)
     if not timesteps:
         timesteps = np.arange(len(arr_list))
 
+    # Préparer la figure
     fig, axes = plt.subplots(nrows=n_rows, ncols=n_cols, figsize=(4*n_cols, 4*n_rows))
-
-    # Au cas où n_rows==1 ou n_cols==1, on transforme axes en liste
     axes = axes.flatten() if n_rows*n_cols > 1 else [axes]
+
+    # Définir le colormap discret
+    cmap = colors.ListedColormap(['black', 'gray', 'white'])
+    bounds = [-1.5, -0.5, 0.5, 1.5]
+    norm = colors.BoundaryNorm(bounds, cmap.N)
 
     for i, arr in enumerate(arr_list):
         ax = axes[i]
-        # Exemple : on affiche le tableau arr sous forme d’image
-        ax.imshow(arr, cmap='gray', interpolation='none')
-        ax.set_title(f"Time {timesteps[i]}", fontsize=20)
+        im = ax.imshow(arr, cmap=cmap, norm=norm)
+        ax.set_title(f"Time {timesteps[i]}", fontsize=12)
         ax.axis('off')
 
-    # Si jamais il reste des cases vides dans la grille, on les masque
+    # Masquer les axes inutilisés
     for j in range(i+1, n_rows*n_cols):
         axes[j].set_visible(False)
+
+    # Ajouter une colorbar pour l'ensemble
+    #cbar = fig.colorbar(im, ax=axes, ticks=[-1, 0, 1], orientation='horizontal', fraction=0.05, pad=0.05)
+    #cbar.set_label("Spin Value")
 
     plt.tight_layout()
     plt.show()
