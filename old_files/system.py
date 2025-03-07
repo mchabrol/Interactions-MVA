@@ -1,6 +1,6 @@
 import numpy as np
 from random import random
-from source.trader import Trader
+from source.old_py_files.trader import Trader
 
 class SpinSystem:
     """
