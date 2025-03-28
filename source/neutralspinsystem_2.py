@@ -160,11 +160,11 @@ class SpinSystem:
                 else:
                     source[row, col] = -1
 
-    def update(self, reduced_neighbour_coupling, reduced_alpha):
+    def update(self, reduced_neighbour_coupling, reduced_alpha, excluding_neutrals=False):
         """
         Met à jour les spins en excluant les neutres.
         """
-        number_of_traders = 2 * self.black.shape[0] * self.black.shape[1]
+        number_of_traders = 2 * self.black.shape[0] * self.black.shape[1] #
         global_market = np.sum(self.black + self.white)
 
         market_coupling = reduced_alpha * abs(global_market) / number_of_traders
@@ -173,5 +173,15 @@ class SpinSystem:
         self._update_strategies(True,  self.black, self.white, probabilities)
         self._update_strategies(False, self.white, self.black, probabilities)
 
-        return global_market / number_of_traders
+        if not excluding_neutrals:
+            return global_market / number_of_traders
+        if excluding_neutrals: 
+            if self.region_neutral == "random":
+                number_of_neutrals = int(self.fraction_neutral * self.grid_height * self.grid_width)
+            else : 
+                number_of_neutrals = int(self.fraction_neutral * (self.grid_height * self.grid_width)/4)
+            return (global_market) / (number_of_traders - number_of_neutrals)
+    
+   
+
 
