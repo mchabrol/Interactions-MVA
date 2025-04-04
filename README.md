@@ -1,35 +1,58 @@
 # Interactions-MVA
 
-Ce projet est une adaptation de [Pymarket](https://github.com/kenokrieger/pymarket),  
-qui implémente le **modèle d’Ising de Bornholdt** en Python.
+This project is an adaptation of [Pymarket](https://github.com/kenokrieger/pymarket),  
+which implements the **Bornholdt Ising Model** in Python.
 
-## 🔹 Modifications et améliorations
+## Modifications and improvements
 
-Ce projet reprend certaines idées et implémentations de **Pymarket** tout en ajoutant les améliorations suivantes :
-- **Refonte en programmation orientée objet (POO)** :  
-- **Réorganisation et modularisation du code** pour une meilleure lisibilité.
-- **Optimisation des mises à jour des spins** avec une gestion plus efficace des sous-grilles.
-- **Ajout de visualisations** pour observer l’évolution du marché en fonction du temps.
+This project takes inspiration from **Pymarket**, while adding the following improvements:
+- **Refactoring into object-oriented programming (OOP)**:
+- **Reorganization and modularization of the code** for better readability.
+- **Optimized spin updates** with more efficient subgrid management.
+- **Added visualizations** to observe market evolution over time.
 
-L'implémentation originale de **Pymarket** peut être trouvée ici :  
-➡️ [Pymarket sur GitHub](https://github.com/kenokrieger/pymarket)
+The original implementation of **Pymarket** can be found here:  
+➡️ [Pymarket on GitHub](https://github.com/kenokrieger/pymarket)
 
----
-
-## 📂 Notebooks principaux
-
-Quatre notebooks principaux sont inclus dans ce projet, chacun explorant une variation du modèle de base :
-
-- **`main.ipynb`** : Implémente le modèle de base décrit dans le papier et déjà présent dans Pymarket. Il sert de référence pour les autres expériences.
-- **`mainwithadvantage.ipynb`** : Introduit une asymétrie d’information en simulant un petit groupe d’agents mieux informés, ce qui permet d’étudier l'impact d’un avantage informationnel sur le marché.
-- **`mainwithkrash.ipynb`** : Modélise des krachs boursiers en imposant la vente forcée d’un certain nombre d’agents simultanément, afin d’analyser les dynamiques de panique et d’effondrement du marché.
-- **`main_neutral_1.ipynb`** : Explore un modèle où une fraction d’agents adopte une opinion neutre. Ces agents peuvent être distribués aléatoirement ou regroupés dans une zone spécifique (ex: coin supérieur gauche). L’objectif est d’étudier l'impact de ces agents neutres sur les cycles de polarisation et de volatilité du marché.
-
-Chacun de ces notebooks est accompagné d’un fichier `.py` correspondant, qui contient les fonctions implémentant ces expériences.
+This model is based on the paper:  
+**Bornholdt, S. (2001).** *Expectation bubbles in a spin model of markets: Intermittency from frustration across scales.* [arXiv:cond-mat/0105224](http://arxiv.org/abs/cond-mat/0105224).
 
 ---
 
-## 📜 **Licence**
+## Main Notebooks
 
-L’implémentation originale de **Pymarket** est sous licence MIT.  
+Three main notebooks are:
 
+- **`main.ipynb`**: Implements the base model described in the paper. It reproduces the results of the paper and serves as a reference for the other experiments.
+- **`main_neutral_agents_fixed.ipynb`**: Introduces a fixed fraction of neutral agents and observes the evolution of the system.
+- **`effect_of_alpha.ipynb`**: Analyzes the effect of the coupling parameter $\alpha$ in the case of a fixed fraction of neutral agents. This notebook explores how $\alpha$ influences the system’s polarization.
+
+Each notebook is accompanied by a corresponding `.py` file, containing the functions implementing these experiments.
+
+---
+## Code Architecture
+
+```plaintext
+Interactions-MVA/
+│
+├── images/                                     
+│
+├── source/                    
+│   ├── __pycache__/             
+│   ├── neutralspinsystem_fixed.py
+│   ├── spinsystem.py            
+│   ├── utils.py
+│             
+│── effect_of_alpha.ipynb   
+│── main.ipynb             
+│── main_neutral_agents_fixed.ipynb 
+│
+│── multising.conf    
+├── README.md                 
+│
+└── .gitignore
+```
+
+## **License**
+
+The original implementation of **Pymarket** is under the MIT license.
