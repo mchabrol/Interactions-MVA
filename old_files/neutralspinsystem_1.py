@@ -23,12 +23,10 @@ class SpinSystem:
         self.fraction_neutral = fraction_neutral
         self.region_neutral = region_neutral
 
-        # Chaque sous-grille fait la moitié de la largeur totale
         color_shape = (grid_height, grid_width // 2)
         self.black = np.ones(color_shape, dtype=np.int8)
         self.white = np.ones(color_shape, dtype=np.int8)
 
-        # Initialisation des spins avec agents neutres
         self._init_spins()
 
 
@@ -37,20 +35,18 @@ class SpinSystem:
         Initialise les spins : +1 ("up"), -1 ("down"), 0 (neutre).
         On peut choisir entre une répartition aléatoire des neutres ou une zone localisée.
         """
-        # Nombre total d'agents
+  
         total_agents = self.grid_height * self.grid_width
         num_neutral = int(self.fraction_neutral * total_agents)
 
-        # Grille temporaire pour distribuer les neutres avant séparation en black/white
         full_grid = np.ones((self.grid_height, self.grid_width), dtype=np.int8)
 
         if self.region_neutral == "random":
-            # Sélection aléatoire de num_neutral agents dans toute la grille
+            # selection aleatoire de num_neutral agents dans toute la grille
             indices = np.random.choice(total_agents, num_neutral, replace=False)
-            full_grid.ravel()[indices] = 0  # Mettre les indices sélectionnés à 0
+            full_grid.ravel()[indices] = 0  # Mettre les indices selectionnes à 0
 
         else:
-            # Définition des régions de la grille
             half_h, half_w = self.grid_height // 2, self.grid_width // 2
 
             if self.region_neutral == "top_left":
@@ -64,40 +60,38 @@ class SpinSystem:
             else:
                 raise ValueError("Erreur: région neutre invalide ! Choisir 'random', 'top_left', 'top_right', 'bottom_left' ou 'bottom_right'.")
 
-            # Convertir en indices 1D
+
             region_indices = np.ravel_multi_index((region_x.ravel(), region_y.ravel()), full_grid.shape)
 
-            # Sélectionner num_neutral_in_zone agents dans cette zone
+            # selectionner num_neutral_in_zone agents dans cette zone
             num_neutral_in_zone = min(int(self.fraction_neutral * len(region_indices)), len(region_indices))
             selected_indices = np.random.choice(region_indices, num_neutral_in_zone, replace=False)
 
-            # Mettre à jour directement full_grid avec les indices globaux
             full_grid.ravel()[selected_indices] = 0
 
-        # Affectation des valeurs restantes à +1 ou -1
+        # affectation des valeurs restantes à +1 ou -1
         for i in range(self.grid_height):
             for j in range(self.grid_width):
                 if full_grid[i, j] == 0:
                     continue  # Déjà neutre
                 full_grid[i, j] = 1 if random() < self.init_up else -1
 
-        # Reconstruction de black et white
-        self.black[:, :] = full_grid[:, ::2]  # Colonnes paires -> black
-        self.white[:, :] = full_grid[:, 1::2]  # Colonnes impaires -> white
+        self.black[:, :] = full_grid[:, ::2]  
+        self.white[:, :] = full_grid[:, 1::2] 
 
 
     def precompute_probabilities(self, reduced_neighbor_coupling, market_coupling):
         """
         Calcule les probabilités de flip pour toutes les combinaisons :
-        - 2 états initiaux du spin : (+1 ou -1 ou 0)  
-        - 9 sommes de voisins possibles : (-4, -3, -2, -1, 0, +1, +2, +3, +4)
+        - 2 états initiaux du spin : (+1 ou -1)  
+        - 5 sommes de voisins possibles : (-4, -2, 0, +2, +4)
         """
-        probabilities = np.empty((3, 9), dtype=float)
+        probabilities = np.empty((2, 5), dtype=float)
         # spin_idx: 0 => spin = -1, 1 => spin = +1
-        for spin_idx in [0, 1, 2]:
-            spin_val = -1 if spin_idx == 2 else spin_idx
-            for col in range(9):
-                neighbour_sum = -4 + col  # -4, -3, -2, -1, 0, +1, +2, +3, +4
+        for spin_idx in [0, 1]:
+            spin_val = 1 if spin_idx == 1 else -1
+            for col in range(5):
+                neighbour_sum = -4 + 2 * col  # -4, -2, 0, +2, +4
                 field = reduced_neighbor_coupling * neighbour_sum \
                         - market_coupling * spin_val  # Équation (4)
                 # Règle de Heatbath : P(flip) = 1 / (1 + exp(field))
@@ -149,10 +143,10 @@ class SpinSystem:
                     continue
 
                 neighbour_sum = self._compute_neighbour_sum(is_black, checkerboard_agents, row, col)
-                # spin_idx = 2 si -1, 1 si +1, 0 si 0
-                spin_idx = 2 if current_spin == -1 else current_spin
-                # sum_idx = index pour (-4, -3, -2, -1, 0, +1, +2, +3, +4)
-                sum_idx = int((neighbour_sum + 4)) # on décale tout de 4 (sum_idx -4 = 0 etc)
+                # spin_idx = 0 si -1, 1 si +1
+                spin_idx = 0 if current_spin == -1 else 1
+                # sum_idx = index pour (-4, -2, 0, +2, +4)
+                sum_idx = int((neighbour_sum + 4) / 2)
 
                 # Décision de flip via probabilité
                 if random() < probabilities[spin_idx][sum_idx]:
@@ -160,11 +154,11 @@ class SpinSystem:
                 else:
                     source[row, col] = -1
 
-    def update(self, reduced_neighbour_coupling, reduced_alpha, excluding_neutrals=False):
+    def update(self, reduced_neighbour_coupling, reduced_alpha):
         """
         Met à jour les spins en excluant les neutres.
         """
-        number_of_traders = 2 * self.black.shape[0] * self.black.shape[1] #
+        number_of_traders = 2 * self.black.shape[0] * self.black.shape[1]
         global_market = np.sum(self.black + self.white)
 
         market_coupling = reduced_alpha * abs(global_market) / number_of_traders
@@ -173,15 +167,5 @@ class SpinSystem:
         self._update_strategies(True,  self.black, self.white, probabilities)
         self._update_strategies(False, self.white, self.black, probabilities)
 
-        if not excluding_neutrals:
-            return global_market / number_of_traders
-        if excluding_neutrals: 
-            if self.region_neutral == "random":
-                number_of_neutrals = int(self.fraction_neutral * self.grid_height * self.grid_width)
-            else : 
-                number_of_neutrals = int(self.fraction_neutral * (self.grid_height * self.grid_width)/4)
-            return (global_market) / (number_of_traders - number_of_neutrals)
-    
-   
-
+        return global_market / number_of_traders
 
