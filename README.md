@@ -1,7 +1,7 @@
 # Interactions-MVA
 
-This project is an adaptation of [Pymarket](https://github.com/kenokrieger/pymarket),  
-which implements the **Bornholdt Ising Model** in Python.
+This repository contains the final project for the Interactions course by Julien Randon-Furling at MVA, ENS Paris-Saclay.
+This project is an adaptation of [Pymarket](https://github.com/kenokrieger/pymarket), which implements the **Bornholdt Ising Model** in Python. 
 
 ## Modifications and improvements
 
@@ -56,3 +56,11 @@ Interactions-MVA/
 ## **License**
 
 The original implementation of **Pymarket** is under the MIT license.
+
+This work was done collaboratively by:
+
+- **Augustin Cablant** (`augustin(dot)cablant(at)ensae(dot)fr`)
+- **Suzie Grondin** (`suzie(dot)grondin(at)ensae(dot)fr`)
+- **Adrien Letellier** (`adrien(dot)letellier(at)ensae(dot)fr`)
+- **Marion Chabrol** (`marion(dot)chabrol(at)ensae(dot)fr`)
+
