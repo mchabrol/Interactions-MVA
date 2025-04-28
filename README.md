@@ -26,6 +26,8 @@ The main notebooks are:
 - **`main.ipynb`**: Implements the base model described in the paper. It reproduces the results of the paper and serves as a reference for the other experiments.
 - **`main_neutral_agents_fixed.ipynb`**: Introduces a fixed fraction of neutral agents and observes the evolution of the system.
 - **`effect_of_alpha.ipynb`**: Analyzes the effect of the coupling parameter $\alpha$ in the case of a fixed fraction of neutral agents. This notebook explores how $\alpha$ influences the system’s polarization.
+- **`main_neutral.ipynb`**: Implements the dynamic neutral agents model.
+- **`simple_model.ipynb`**: Implements the alternative dynamic mechanism that mimics agents turnover in section 3.3.
 
 Notebooks are accompanied by `.py` file, containing the functions implementing these experiments.
 **To reproduce the results of the report, just run the notebooks sequentially**.
